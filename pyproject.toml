@@ -1,6 +1,6 @@
 [project]
 name = "django-lazy-managers"
-version = "0.0.0"
+version = "0.0.1"
 description = "Lazy model managers for Django"
 authors = [
     { name = "Matti Lamppu", email = "lamppu.matti.akseli@gmail.com" },
@@ -8,13 +8,15 @@ authors = [
 license = "MIT"
 readme = "README.md"
 keywords = [
-    "...",
+    "django",
+    "lazy",
+    "manager",
 ]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    # "Development Status :: 1 - Planning",
     # "Development Status :: 2 - Pre-Alpha",
     # "Development Status :: 3 - Alpha",
-    # "Development Status :: 4 - Beta",
+    "Development Status :: 4 - Beta",
     # "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Operating System :: OS Independent",
