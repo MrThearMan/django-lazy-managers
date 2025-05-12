@@ -2,6 +2,7 @@ site_name: django-lazy-managers
 
 nav:
   - Home: index.md
+  - Examples: example.md
 
 theme:
   name: readthedocs
