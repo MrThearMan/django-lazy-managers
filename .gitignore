@@ -8,6 +8,7 @@
 # Build dirs
 dist
 build
+site
 
 # Generated files
 coverage.xml
