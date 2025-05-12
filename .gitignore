@@ -1,0 +1,20 @@
+# Caches
+.nox
+.ruff_cache
+.mypy_cache
+*.pytest_cache
+*__pycache__
+
+# Build dirs
+dist
+build
+
+# Generated files
+coverage.xml
+.coverage
+
+# Local configs
+.idea
+.vscode
+pytest.ini
+mypy.ini
