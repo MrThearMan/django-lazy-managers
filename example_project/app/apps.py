@@ -9,3 +9,5 @@ __all__ = [
 
 class ExampleConfig(AppConfig):
     name = "example_project.app"
+    verbose_name = "Example"
+    default_auto_field = "django.db.models.BigAutoField"

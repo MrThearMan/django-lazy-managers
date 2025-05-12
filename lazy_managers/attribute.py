@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from django.utils.module_loading import import_string
 
 from .utils import find_attribute_type_hint_path
+
+if TYPE_CHECKING:
+    from django.db import models
 
 __all__ = [
     "LazyModelAttribute",
@@ -18,7 +21,7 @@ class LazyModelAttribute:
     """
 
     @classmethod
-    def new(cls) -> LazyModelAttribute:
+    def new(cls) -> Any:  # 'Any' because attribute will be replaced with a lazy-loaded version.
         """
         Create a new lazy loaded model attribute for a model.
 
@@ -57,19 +60,22 @@ class LazyModelAttribute:
         path = find_attribute_type_hint_path(depth=1)
 
         # Create a new subclass so that '__import_path__' is unique per lazy-loaded manager.
-        class LazyAttribute(cls, __import_path__=path): ...
+        class LazyAttribute(cls, __import_path__=path): ...  # type: ignore[call-arg,valid-type,misc]
 
         return LazyAttribute()
 
+    __import_path__: ClassVar[str]
+    __attribute_class__: ClassVar[type | None]
+
     def __init_subclass__(cls, **kwargs: Any) -> None:
         # '__import_path__' should always be given.
-        cls.__import_path__: str = kwargs["__import_path__"]
+        cls.__import_path__: str = kwargs["__import_path__"]  # type: ignore[misc]
         """Import path to the type hint."""
 
-        cls.__attribute_class__: type | None = None
+        cls.__attribute_class__: type | None = None  # type: ignore[misc]
         """Type hinted class imported from `__import_path__`."""
 
-    def __get__(self, instance: Any | None, owner: type[Any]) -> Any:
+    def __get__(self, instance: models.Model | None, owner: type[models.Model]) -> Any:
         attribute_class = self.__load_class()
         if instance is None:
             return attribute_class

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from django.db.models.manager import BaseManager
 from django.utils.module_loading import import_string
@@ -25,7 +25,7 @@ class LazyModelManager(BaseManager):
     """
 
     @classmethod
-    def new(cls) -> LazyModelManager:
+    def new(cls) -> Any:  # 'Any' because manager will be replaced with a lazy-loaded version.
         """
         Create a new lazy loaded model manager for a model.
 
@@ -50,17 +50,20 @@ class LazyModelManager(BaseManager):
         path = find_attribute_type_hint_path(depth=1)
 
         # Create a new subclass so that '__import_path__' is unique per lazy-loaded manager.
-        class LazyManager(cls, __import_path__=path): ...
+        class LazyManager(cls, __import_path__=path): ...  # type: ignore[call-arg,valid-type,misc]
 
         return LazyManager()
+
+    __import_path__: ClassVar[str]
+    __manager__: ClassVar[Manager | None]
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         # '__import_path__' should be given to the initial subclass, but can be omitted if subclassed further.
         # (This is required for django-modeltranslation to work.)
-        cls.__import_path__: str = kwargs.get("__import_path__") or cls.__import_path__
+        cls.__import_path__: str = kwargs.get("__import_path__") or cls.__import_path__  # type: ignore[misc]
         """Import path to the type hint."""
 
-        cls.__manager__: Manager | None = None
+        cls.__manager__: Manager | None = None  # type: ignore[misc]
         """Type hinted Manager class imported from `__import_path__`."""
 
     def contribute_to_class(self, cls: type[models.Model], name: str) -> None:
@@ -72,11 +75,11 @@ class LazyModelManager(BaseManager):
         cls._meta.add_manager(self)  # type: ignore[arg-type]
 
     @property
-    def use_in_migrations(self) -> bool:
+    def use_in_migrations(self) -> bool:  # type: ignore[override]
         manager = self._load_manager()
         return manager.use_in_migrations
 
-    def deconstruct(self) -> ManagerDeconstructArgs:
+    def deconstruct(self) -> ManagerDeconstructArgs:  # type: ignore[override]
         # Replace the 'manager_class' argument so the actual manager class is loaded.
         # Skip some of the validation logic in the original method, as we don't need it here.
         return ManagerDeconstructArgs(
@@ -120,8 +123,8 @@ class LazyModelManager(BaseManager):
             related_name: str = self.field.remote_field.related_name
 
         elif manager_name == "ManyRelatedManager":
-            related_model: type[models.Model] = self.source_field.remote_field.model
-            related_name: str = self.prefetch_cache_name
+            related_model = self.source_field.remote_field.model
+            related_name = self.prefetch_cache_name
 
         else:
             msg = f"Unknown related manager: {manager_name}"
