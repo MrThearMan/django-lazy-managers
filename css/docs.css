@@ -1,0 +1,376 @@
+/*
+Variables
+*/
+:root {
+    --project-nav-width: 250px;
+    --project-mobile-nav-width: 85%;
+
+    --project-text-color: #bbbbbb;
+    --project-nav-color: #191919;
+    --project-section-color: #222222;
+    --project-active-color: #111111;
+    --project-quote-color: #424242;
+    --project-notice-color: #aa4926;
+    --project-target-color: #292900;
+
+    --project-code-color: #1a1c20;
+    --project-lineno-color: #404d60;
+    --project-highlight-color: #23252d;
+
+    --project-scrollbar-color: #424242;
+
+    /* Default color */
+    background-color: var(--project-section-color);
+}
+
+/*
+Layout
+*/
+body {
+    color: var(--project-text-color);
+    background-color: var(--project-section-color);
+
+    .wy-grid-for-nav {
+
+        /*
+        Sidebar
+        */
+        nav.wy-nav-side {
+            background-color: var(--project-nav-color);
+            width: var(--project-nav-width);
+            padding-bottom: 0;
+
+            .wy-side-scroll {
+                width: auto;
+                overflow-y: auto;
+
+                /*
+                Sidebar banner
+                */
+                .wy-side-nav-search {
+                    width: auto;
+                    background-color: var(--project-nav-color);
+
+                    /*
+                    Search bar
+                    */
+                    input[type=text] {
+                        color: var(--project-text-color);
+                        background-color: var(--project-section-color);
+                        border-color: var(--project-active-color);
+                        box-shadow: none;
+                        caret-color : var(--project-text-color);
+                    }
+                }
+
+                /*
+                Sidebar items
+                */
+                .wy-menu-vertical {
+                    width: var(--project-nav-width);
+
+                    /*
+                    Not selected
+                    */
+                    li[class^='toctree-'],
+                    li[class^='toctree-'] > a {
+                        color: var(--project-text-color);
+                        background-color: var(--project-nav-color);
+                        border: none;
+                    }
+
+                    /*
+                    Selected/Hovered sidebar items
+                    */
+                    li[class^='toctree-'].current,
+                    li[class^='toctree-'].current > a,
+                    li[class^='toctree-'].current > a:hover,
+                    li[class^='toctree-'] > a:hover {
+                        color: var(--project-text-color);
+                        background-color: var(--project-active-color);
+                        border: none;
+                    }
+                }
+
+            }
+
+        }
+
+        /*
+        Content
+        */
+        section.wy-nav-content-wrap {
+            margin-left: var(--project-nav-width);
+            background-color: var(--project-section-color);
+
+            /*
+            Mobile top nav
+            */
+            nav.wy-nav-top {
+                background-color: var(--project-nav-color);
+            }
+
+            .wy-nav-content {
+                background-color: var(--project-section-color);
+                max-width: 1024px;
+                margin: auto;
+
+                h1:target,
+                h2:target,
+                h3:target,
+                h4:target,
+                h5:target,
+                h6:target {
+                    margin-left: -0.5rem;
+                    margin-right: -0.5rem;
+                    padding-left: 0.5rem;
+                    padding-right: 0.5rem;
+                    border-radius: 6px;
+                    background-color: var(--project-target-color);
+                }
+            }
+        }
+
+        /*
+        Mobile
+        */
+        @media screen and (max-width: 768px) {
+
+            /*
+            Sidebar
+            */
+            nav.wy-nav-side {
+
+                &.shift {
+                    width: var(--project-mobile-nav-width);
+                }
+
+                .wy-side-scroll {
+                    .wy-menu-vertical {
+                        width: auto;
+                    }
+                }
+
+            }
+
+            /*
+            Content
+            */
+            section.wy-nav-content-wrap {
+                margin-left: 0;
+
+                &.shift {
+                    position: fixed;
+                    min-width: 100%;
+                    left: var(--project-mobile-nav-width);
+                    top: 0;
+                    height: 100%;
+                    overflow: hidden;
+                }
+            }
+
+        }
+
+    }
+
+    /*
+    Next and previous buttons
+    */
+    .rst-versions {
+        display: none;
+    }
+}
+
+/*
+Codeblocks
+*/
+.highlight {
+    color: var(--project-text-color) !important;
+    background-color: var(--project-code-color) !important;
+    border: 1px solid var(--project-code-color) !important;
+    border-radius: 6px;
+
+    div {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block;
+
+        td.linenos {
+            color: var(--project-text-color) !important;
+            background-color: var(--project-code-color) !important;
+            border: none !important;
+            margin: 0;
+            padding: 0;
+            white-space: break-spaces;
+            vertical-align: middle;
+
+            div {
+                pre {
+                    padding: 0;
+                    line-height: 125%;
+                    border-right: 1px solid var(--project-lineno-color);
+
+                    span {
+
+                        &.normal {
+                            padding: 0 13px;
+                        }
+
+                        &.special {
+                            padding: 0 13px;
+                            background-color: var(--project-highlight-color);
+                        }
+
+                        a {
+                            color: var(--project-lineno-color);
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        td.code {
+            color: var(--project-text-color) !important;
+            background-color: var(--project-code-color) !important;
+            border: none !important;
+            padding: 0;
+            margin: 0;
+            white-space: break-spaces;
+            vertical-align: middle;
+
+            div {
+                pre {
+                    line-height: 125%;
+                    padding: 0;
+                    margin: 0;
+
+                    code {
+                        color: var(--project-text-color);
+                        background-color: var(--project-code-color);
+                        padding: 8px 12px;
+                        border: none;
+
+                        .hll {
+                            background-color: var(--project-highlight-color);
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+}
+
+/*
+Details
+*/
+details {
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    border: 2px solid var(--project-quote-color);
+    border-radius: 6px;
+
+    summary {
+        padding: 3px;
+    }
+
+    summary:hover {
+        cursor: pointer;
+    }
+
+    p {
+        margin: 16px 0;
+    }
+}
+
+/*
+Inline code
+*/
+.rst-content code {
+    color: var(--project-text-color);
+    background-color: var(--project-code-color);
+    border: 1px solid var(--project-code-color);
+    border-radius: 6px;
+}
+
+.rst-content div[class^=highlight] {
+    margin: 24px 0;
+}
+
+/*
+Scrollbars
+*/
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: var(--project-nav-color);
+}
+::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: var(--project-nav-color);
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: var(--project-scrollbar-color);
+}
+
+/*
+Blockquotes
+*/
+blockquote {
+    background-color: var(--project-quote-color);
+    border: 1px solid var(--project-quote-color);
+    border-left: 4px solid var(--project-notice-color);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-left: 0 !important;
+    padding: 24px 12px 0 24px;
+
+    .highlight {
+        margin-bottom: 24px !important;
+    }
+}
+
+/*
+Mermaid
+*/
+div.mermaid {
+    display: flex;
+    justify-content: center;
+
+    svg {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        padding: 12px 0;
+    }
+
+    .edgeLabel {
+        background-color: transparent;
+        color: #bbbbbb;
+    }
+
+    .messageText {
+        fill: #bbbbbb;
+        stroke: none;
+    }
+
+    g {
+        rect {
+            fill: #DAE8FC;
+            stroke: #6C8EBF;
+        }
+        polygon {
+            fill: #FFF2CC;
+            stroke: #E5D092;
+        }
+    }
+}
