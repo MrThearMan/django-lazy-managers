@@ -56,7 +56,7 @@ Django = ">=4.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.4.1"
-coverage = "7.10.3"
+coverage = "7.10.4"
 pytest-django = "4.11.1"
 nox = "2025.5.1"
 factory-boy = "3.3.3"
