@@ -63,13 +63,13 @@ factory-boy = "3.3.3"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "1.6.1"
-pymdown-extensions = "10.21.2"
+pymdown-extensions = "10.21.3"
 pygments = "2.20.0"
 mkdocs-mermaid2-plugin = "1.2.3"
 
 [tool.poetry.group.lint.dependencies]
 pre-commit = "4.6.0"
-mypy = "2.0.0"
+mypy = "2.1.0"
 django-stubs = "6.0.4"
 
 [tool.ruff]
