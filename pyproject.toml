@@ -57,8 +57,8 @@ Django = ">=5.2.17"
 [tool.poetry.group.test.dependencies]
 pytest = "9.1.1"
 coverage = "7.15.4"
-pytest-django = "4.13.0"
-nox = "2026.7.11"
+pytest-django = "4.14.0"
+nox = "2026.8.10"
 factory-boy = "3.3.3"
 
 [tool.poetry.group.docs.dependencies]
@@ -68,9 +68,9 @@ pygments = "2.20.0"
 mkdocs-mermaid2-plugin = "1.2.3"
 
 [tool.poetry.group.lint.dependencies]
-pre-commit = "4.6.1"
+pre-commit = "4.6.2"
 mypy = "2.3.0"
-django-stubs = "6.0.8"
+django-stubs = "6.1.0"
 
 [tool.ruff]
 fix = true
