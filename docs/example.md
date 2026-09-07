@@ -7,10 +7,12 @@ Given the following models:
 ```python
 from django.db import models
 
+
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
@@ -37,6 +39,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects: ClassVar[ProjectManager] = LazyModelManager.new()
+
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
@@ -74,6 +77,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     validators: ClassVar[ProjectValidators] = LazyModelAttribute.new()
+
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
