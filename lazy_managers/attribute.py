@@ -62,7 +62,8 @@ class LazyModelAttribute:
         path = find_attribute_type_hint_path(depth=1)
 
         # Create a new subclass so that '__import_path__' is unique per lazy-loaded manager.
-        class LazyAttribute(cls, __import_path__=path): ...  # type: ignore[call-arg,valid-type,misc]
+        class LazyAttribute(cls, __import_path__=path):  # type: ignore[call-arg,valid-type,misc]
+            ...
 
         return LazyAttribute()
 

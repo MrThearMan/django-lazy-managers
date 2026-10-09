@@ -50,7 +50,8 @@ class LazyModelManager(BaseManager[Any]):
         path = find_attribute_type_hint_path(depth=1)
 
         # Create a new subclass so that '__import_path__' is unique per lazy-loaded manager.
-        class LazyManager(cls, __import_path__=path): ...  # type: ignore[call-arg,valid-type,misc]
+        class LazyManager(cls, __import_path__=path):  # type: ignore[call-arg,valid-type,misc]
+            ...
 
         # Name the class after the hinted manager, since django-stubs finds the types
         # for a model's managers by the import path of their runtime classes.
