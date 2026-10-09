@@ -31,9 +31,9 @@ classifiers = [
     "Framework :: Django :: 6.0",
     "Framework :: Django :: 6.1",
 ]
-requires-python = ">=3.11,<4"
-dynamic = [
-    "dependencies",
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2.17",
 ]
 
 [project.urls]
@@ -42,32 +42,44 @@ dynamic = [
 "Bug Tracker" = "https://github.com/MrThearMan/django-lazy-managers/issues"
 "Documentation" = "https://mrthearman.github.io/django-lazy-managers"
 
-[tool.poetry]
-requires-poetry = ">=2.0.0"
-packages = [
-    { include = "lazy_managers" },
+[dependency-groups]
+# Development installs the library with every extra, so that "uv run" needs no
+# extra flags and every optional integration is importable.
+dev = [
+    "django-lazy-managers",
+]
+test = [
+    "pytest==9.1.1",
+    "pytest-django==4.14.0",
+    "coverage==7.16.2",
+    "nox==2026.8.17",
+    "factory-boy==3.3.3",
+]
+docs = [
+    "mkdocs==1.6.1",
+    "pymdown-extensions==12.1",
+    "pygments==2.21.0",
+    "mkdocs-mermaid2-plugin==1.2.3",
+]
+lint = [
+    "pre-commit==4.6.2",
+    "mypy==2.4.0",
+    "django-stubs==6.1.2",
 ]
 
-[tool.poetry.dependencies]
-Django = ">=5.2.17"
+[tool.uv]
+default-groups = "all"
 
-[tool.poetry.group.test.dependencies]
-pytest = "9.1.1"
-coverage = "7.16.2"
-pytest-django = "4.14.0"
-nox = "2026.8.17"
-factory-boy = "3.3.3"
+[tool.uv.sources]
+# Lets the "dev" group name this project's own extras.
+django-lazy-managers = { workspace = true }
 
-[tool.poetry.group.docs.dependencies]
-mkdocs = "1.6.1"
-pymdown-extensions = "12.1"
-pygments = "2.21.0"
-mkdocs-mermaid2-plugin = "1.2.3"
-
-[tool.poetry.group.lint.dependencies]
-pre-commit = "4.6.2"
-mypy = "2.4.0"
-django-stubs = "6.1.1"
+[tool.uv.build-backend]
+# The package is at the repository root, not under "src".
+module-root = ""
+module-name = [
+    "lazy_managers",
+]
 
 [tool.ruff]
 fix = true
@@ -361,5 +373,5 @@ DJANGO_SETTINGS_MODULE = "example_project.config.settings"
 addopts = "--disable-warnings"
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.12.24,<0.13.0"]
+build-backend = "uv_build"
