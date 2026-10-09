@@ -1,3 +1,7 @@
+---
+description: "Django Lazy Managers: lazy model managers and attributes for Django."
+---
+
 # Django lazy managers
 
 [![Coverage Status][coverage-badge]][coverage]

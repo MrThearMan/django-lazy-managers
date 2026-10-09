@@ -1,3 +1,7 @@
+---
+description: "Examples of lazy model managers and lazy model attributes."
+---
+
 # Example
 
 ## Lazy managers
