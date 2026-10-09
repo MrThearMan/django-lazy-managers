@@ -100,26 +100,20 @@ relative_files = true
 branch = true
 include = [
     "lazy_managers/*",
-    "tests/*",  # Make sure all tests are actually run
 ]
 
 [tool.coverage.report]
-omit = [
-    "tests/*",
-    "docs/*",
-    ".venv/*",
-    ".tox/*",
-]
+fail_under = 100
 exclude_also = [
-    "if TYPE_CHECKING:",
-    "except ImportError:",
-    "pragma: no cover",
-    "pass",
+    'if TYPE_CHECKING:',
 ]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "example_project.config.settings"
-addopts = "--disable-warnings"
+addopts = "-vv -s"
+filterwarnings = [
+    "error",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.24,<0.13.0"]
