@@ -144,9 +144,9 @@ class LazyModelManager(BaseManager[Any]):
         manager.name = self.name = self.model._default_manager.name  # noqa: SLF001
         self._replace_manager(manager, self.model, self.name)
 
-        # Clear this `cached_property` (if set) to force the related manager to be recreated when descriptor is used.
-        if "related_manager_cls" in descriptor.__dict__:
-            delattr(descriptor, "related_manager_cls")
+        # Clear this `cached_property` to force the related manager to be recreated when descriptor is used.
+        # It is always set here, since this related manager was created from it.
+        delattr(descriptor, "related_manager_cls")
 
         # Get the new related manager instance.
         return descriptor.__get__(self.instance, None)

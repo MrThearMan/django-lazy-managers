@@ -65,6 +65,27 @@ def test_lazy_manager__load__reverse_foreign_key__no_related_name() -> None:
 
 
 @isolate_apps("example_project.app")
+def test_lazy_manager__load__reverse_foreign_key__multiple_instances() -> None:
+    class Parent(models.Model):
+        class Meta:
+            app_label = "app"
+
+    class Child(models.Model):
+        objects: ClassVar[ProjectManager] = LazyModelManager.new()
+        parent = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name="children")
+
+        class Meta:
+            app_label = "app"
+
+    # Both related managers are created before the lazy manager is loaded.
+    first = Parent(pk=1).children
+    second = Parent(pk=2).children
+
+    assert isinstance(first.all(), ProjectQuerySet)
+    assert isinstance(second.all(), ProjectQuerySet)
+
+
+@isolate_apps("example_project.app")
 def test_lazy_manager__load__reverse_many_to_many() -> None:
     class Item(models.Model):
         class Meta:
