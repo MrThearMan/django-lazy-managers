@@ -17,6 +17,7 @@ __all__ = [
 class ProjectFactory(GenericDjangoModelFactory[Project]):
     class Meta:
         model = Project
+        skip_postgeneration_save = True
 
     name = factory.Faker("name")
     description = factory.Faker("text")
