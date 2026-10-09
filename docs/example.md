@@ -42,7 +42,7 @@ class Project(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    objects: ClassVar[ProjectManager] = LazyModelManager.new()
+    objects: ClassVar[ProjectManager[Project]] = LazyModelManager.new()
 
 
 class Task(models.Model):
@@ -52,7 +52,7 @@ class Task(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
 
-    objects: ClassVar[TaskManager] = LazyModelManager.new()
+    objects: ClassVar[TaskManager[Task]] = LazyModelManager.new()
 ```
 
 With this, our manager (and queryset) classes will be lazily loaded when it is first accessed,
@@ -103,6 +103,17 @@ The `LazyAttribute` type hint tells type checkers about this: `Project.validator
 `type[ProjectValidators]`, and `project.validators` is typed as `ProjectValidators`.
 
 ## Type hints
+
+The lazy descriptors find the class to load from the attribute's type hint, and the import
+for that type hint in the same module. The type hint can be:
+
+- a class, e.g. `ProjectManager`
+- a class wrapped in `ClassVar`, `Final` or `LazyAttribute`, e.g. `ClassVar[ProjectManager]`
+- a generic class, e.g. `ProjectManager[Project]`
+- an attribute of an imported module, e.g. `querysets.ProjectManager`
+
+The import can be relative or absolute, use an alias, or span multiple lines.
+Union types like `ProjectManager | None` are not supported.
 
 ### django-stubs
 

@@ -215,6 +215,17 @@ def test_lazy_manager__load__reverse_many_to_many__no_related_name() -> None:
 
 
 @isolate_apps("example_project.app")
+def test_lazy_manager__generic_type_hint() -> None:
+    class Item(models.Model):
+        objects: ClassVar[ProjectManager[Item]] = LazyModelManager.new()
+
+        class Meta:
+            app_label = "app"
+
+    assert isinstance(Item.objects, ProjectManager)
+
+
+@isolate_apps("example_project.app")
 def test_lazy_manager__class_named_after_type_hint() -> None:
     # django-stubs finds the manager types by the import path of the runtime manager classes.
     class Item(models.Model):

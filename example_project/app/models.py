@@ -23,7 +23,7 @@ class Project(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    objects: ClassVar[ProjectManager] = LazyModelManager.new()
+    objects: ClassVar[ProjectManager[Project]] = LazyModelManager.new()
     validators: LazyAttribute[ProjectValidators] = LazyModelAttribute.new()
 
     def __str__(self) -> str:
@@ -37,7 +37,7 @@ class Task(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
 
-    objects: ClassVar[TaskManager] = LazyModelManager.new()
+    objects: ClassVar[TaskManager[Task]] = LazyModelManager.new()
     validators: LazyAttribute[TaskValidators] = LazyModelAttribute.new()
 
     def __str__(self) -> str:
