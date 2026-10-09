@@ -120,11 +120,17 @@ class LazyModelManager(BaseManager[Any]):
         # `django.db.models.fields.related_descriptors.create_forward_many_to_many_manager`
         if manager_name == "RelatedManager":
             related_model: type[models.Model] = self.field.remote_field.model
-            related_name: str = self.field.remote_field.related_name
+            related_name: str = self.field.remote_field.get_accessor_name()
 
         elif manager_name == "ManyRelatedManager":
             related_model = self.source_field.remote_field.model
-            related_name = self.prefetch_cache_name
+            if self.reverse:
+                # Reverse relations without a 'related_name' have an accessor name that
+                # differs from the query name, e.g., 'task_set' vs 'task'.
+                m2m_field = self.model._meta.get_field(self.query_field_name)  # noqa: SLF001
+                related_name = m2m_field.remote_field.get_accessor_name()
+            else:
+                related_name = self.prefetch_cache_name
 
         else:
             msg = f"Unknown related manager: {manager_name}"
