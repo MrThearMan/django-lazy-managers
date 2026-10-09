@@ -1,21 +1,26 @@
 # Caches
-.nox
-.ruff_cache
-.mypy_cache
-*.pytest_cache
-*__pycache__
+/.nox
+/.ruff_cache
+/.mypy_cache
+/.pytest_cache
+/**/__pycache__
 
 # Build dirs
-dist
-build
-site
+/dist
+/build
+/site
 
 # Generated files
-coverage.xml
-.coverage
+/coverage.xml
+/.coverage
+/.coverage*
+/example_project/config/testdb
 
 # Local configs
-.idea
-.vscode
-pytest.ini
-mypy.ini
+/.idea
+/.vscode
+/pytest.ini
+/mypy.ini
+
+# venv
+/.venv
