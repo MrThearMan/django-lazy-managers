@@ -70,12 +70,12 @@ def get_type_hint_module_name(type_hint: str, frame: FrameType, source_code: lis
         caller_module: str = frame.f_locals["__module__"]
 
         # Remove number parts in the caller module equal to the number of relative "dots" in the import
-        module_parts = caller_module.split(".")
-        for part in module_name.split("."):
-            if part:
-                break
-            module_parts.pop()
+        relative_name = module_name.lstrip(".")
+        dots = len(module_name) - len(relative_name)
+        module_parts = caller_module.split(".")[:-dots]
+        if relative_name:
+            module_parts.append(relative_name)
 
-        module_name = ".".join(module_parts) + module_name
+        module_name = ".".join(module_parts)
 
     return module_name
