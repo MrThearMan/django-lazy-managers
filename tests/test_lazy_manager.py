@@ -212,3 +212,19 @@ def test_lazy_manager__load__reverse_many_to_many__no_related_name() -> None:
     queryset = Item(pk=1).tag_set.all()
 
     assert isinstance(queryset, ProjectQuerySet)
+
+
+@isolate_apps("example_project.app")
+def test_lazy_manager__class_named_after_type_hint() -> None:
+    # django-stubs finds the manager types by the import path of the runtime manager classes.
+    class Item(models.Model):
+        objects: ClassVar[ProjectManager] = LazyModelManager.new()
+
+        class Meta:
+            app_label = "app"
+
+    lazy_manager = Item._meta.default_manager
+
+    assert isinstance(lazy_manager, LazyModelManager)
+    assert type(lazy_manager).__module__ == "example_project.app.querysets"
+    assert type(lazy_manager).__qualname__ == "ProjectManager"

@@ -96,3 +96,13 @@ class Task(models.Model):
 Here the attribute should take a single argument, which is the instance of the model being accessed.
 However, the attribute can be accessed on the class level, in which case the attribute class itself
 will be given from the descriptor.
+
+## Type hints
+
+### django-stubs
+
+Lazy managers work with the [django-stubs] mypy plugin. The plugin finds the types for
+the model's managers and related managers from the lazy managers' type hints,
+so `project.tasks.all()` is typed as `TaskQuerySet[Task, Task]` in the example above.
+
+[django-stubs]: https://github.com/typeddjango/django-stubs

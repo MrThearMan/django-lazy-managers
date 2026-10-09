@@ -16,12 +16,10 @@ __all__ = [
 ]
 
 
-class Project(models.Model):  # type: ignore[django-manager-missing]
+class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
-    tasks: TaskManager
 
     objects: ClassVar[ProjectManager] = LazyModelManager.new()
     validators: ClassVar[ProjectValidators] = LazyModelAttribute.new()
