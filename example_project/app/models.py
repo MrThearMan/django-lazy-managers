@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 
-class Project(models.Model):
+class Project(models.Model):  # type: ignore[django-manager-missing]
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

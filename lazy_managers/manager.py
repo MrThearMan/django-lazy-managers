@@ -18,7 +18,7 @@ __all__ = [
 ]
 
 
-class LazyModelManager(BaseManager):
+class LazyModelManager(BaseManager[Any]):
     """
     Descriptor for lazily loading a model manager.
     Should always be used using `LazyModelManager.new()`.
@@ -145,7 +145,7 @@ class LazyModelManager(BaseManager):
         # Get the new related manager instance.
         return descriptor.__get__(self.instance, None)
 
-    def __get__(self, instance: models.Model | None, model: type[models.Model]) -> Any:
+    def __get__(self, instance: models.Model | None, model: type[models.Model]) -> Any:  # type: ignore[override]
         """Called if accessed from Model class."""
         manager = self._load_manager()
         self._replace_manager(manager, self.model, self.name)

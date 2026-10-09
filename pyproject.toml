@@ -82,6 +82,19 @@ module-name = [
     "lazy_managers",
 ]
 
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+]
+exclude = [
+    "^tests/",
+    "^docs/",
+    "^site/",
+]
+
+[tool.django-stubs]
+django_settings_module = "example_project.config.settings"
+
 [tool.coverage.run]
 relative_files = true
 branch = true

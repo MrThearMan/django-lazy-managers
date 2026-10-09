@@ -59,6 +59,10 @@ migrate:
 migrations:
     @uv run python manage.py makemigrations
 
+# Run mypy
+mypy dir=".":
+    @uv run mypy {{dir}}
+
 # Run tests in all supported python and django versions using nox
 nox:
     @uv run nox
