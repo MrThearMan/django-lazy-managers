@@ -97,8 +97,8 @@ but if not, you can also ask for one.
 2. Push the change to the `main` branch with the commit message `Bump version`.
 3. [Draft a new release] on GitHub.
    - Use `v{version}` (e.g. v1.2.3) for the tag name and `Release {version}` for the release title,
-     using the same version that's in `pyproject.toml`. Note that the release will be made
-     with the `pyproject.toml` version and not the tag name!
+     using the same version that's in `pyproject.toml`. The release pipeline will fail
+     if the `pyproject.toml` version and the tag version do not match.
    - Fill in the release description.
    - Add any attachments when applicable.
 4. Publish the release. This will start the `release` pipeline in [GitHub Actions].
@@ -111,27 +111,29 @@ but if not, you can also ask for one.
 
 ## Setting up the environment
 
-1. Install [Poetry].
+1. Install [uv].
 2. Install [Just].
-3. Run `poetry install` to create a virtual environment and install project dependencies.
-4. Run `just hook` to install the [pre-commit] hooks.
+3. Run `just install` to create a virtual environment and install project dependencies.
+4. Run `just hook` to install the [prek] hooks.
 
-[Poetry]: https://python-poetry.org/docs/#installation
+[uv]: https://docs.astral.sh/uv/getting-started/installation/
 [Just]: https://github.com/casey/just
-[pre-commit]: https://pre-commit.com/
+[prek]: https://prek.j178.dev/
 
 Run `just help` to list all existing development commands and their descriptions.
 
 ## Testing
 
-Tests can be run with `just tests` and individual tests with `just test <test_name>`.
-This will run tests in you [local environment](#setting-up-the-environment).
+Tests can be run with `just test` and individual tests with `just test-one <test_name>`.
+This will run tests in your [local environment](#setting-up-the-environment).
 
 You can also test your code in multiple environments with [nox]. To do this, you must
-install python interpreters for all python version the library supports and then run
+install python interpreters for all python versions the library supports and then run
 `just nox`.
 
 [nox]: https://github.com/wntrblm/nox
+
+Type checking can be run with `just mypy`.
 
 Linting can be run on-demand with `just lint` or automatically before commits
 when installed with `just hook`.
@@ -156,10 +158,13 @@ that is raised at the end of a match statement, where its cases cover all possib
 Tests are an exception to this.
 
 Make sure the typing construct used is supported in all python versions
-the library supports. If not, you should reconsider if there is an older alternative,
-or if there is a backport that can be installed conditionally for the older versions.
-In these cases, the type should be added to the `lazy_managers/typing.py` file, so that the
-import logic between the backport and the standard library is contained in one place.
+the library supports, starting from Python 3.12. For example, use the PEP 695
+syntax for generics (`class Foo[T]: ...`) instead of `TypeVar`.
+
+Code is type checked with [mypy], and it must pass without errors.
+Run it with `just mypy`. CI will check this as well.
+
+[mypy]: https://mypy.readthedocs.io/
 
 Create all custom types in `lazy_managers/typing.py` and import them from there.
 This helps avoids circular imports and prevents creating duplicate types.
@@ -188,11 +193,11 @@ Docstrings can include code examples, but longer one should be written to [docs]
 
 ### All code should be linted using the projects lint rules
 
-Easiest way to do this is to install the [pre-commit] hooks with `just hook`. This will make
-sure the pre-commit hooks will run automatically when you make a commit. You can also run
+Easiest way to do this is to install the [prek] hooks with `just hook`. This will make
+sure the hooks will run automatically when you make a commit. You can also run
 hooks manually with `just lint`.
 
-[pre-commit]: https://pre-commit.com/
+[prek]: https://prek.j178.dev/
 
 Comments that ignore linting rules (`# type: ignore[...]`, `# fmt: off`, `# noqa: ...`)
 should be used _**very**_ sparingly. They are often not necessary and can lead to
@@ -200,7 +205,9 @@ undocumented behavior if you are not careful.
 
 ## Guidelines for writing documentation
 
-- All documentation is written in `docs/` using markdown, and built with [mkdocs]
+- All documentation is written in `docs/` using markdown, and built with [zensical].
+  Build the docs with `just docs-build`, or serve them locally with `just docs`
+- Every page needs a `description` in its front matter
 - Write in idiomatic english, using simple language
 - Keep examples simple and self-contained
 - Give the reader time to understand the basics before going over edge cases and configurations
@@ -211,8 +218,8 @@ undocumented behavior if you are not careful.
 - Do not use emojis
 - Double-check for spelling mistakes and grammar
 
-[mkdocs]: https://www.mkdocs.org/
-[fenced code blocks]: https://www.mkdocs.org/user-guide/writing-your-docs/#fenced-code-blocks
+[zensical]: https://zensical.org/
+[fenced code blocks]: https://www.markdownguide.org/extended-syntax/#fenced-code-blocks
 [blockquotes]: https://www.markdownguide.org/basic-syntax#blockquotes-1
 [horizontal rules]: https://www.markdownguide.org/basic-syntax#horizontal-rules
 [links]: https://www.markdownguide.org/basic-syntax#links
