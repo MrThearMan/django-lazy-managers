@@ -47,6 +47,23 @@ def test_lazy_manager__load__related() -> None:
 
 
 @isolate_apps("example_project.app")
+def test_lazy_manager__load__multiple_managers() -> None:
+    class Item(models.Model):
+        objects: ClassVar[ProjectManager] = LazyModelManager.new()
+        other = models.Manager()
+
+        class Meta:
+            app_label = "app"
+
+    assert Item._meta.default_manager.name == "objects"
+
+    assert isinstance(Item.objects, ProjectManager)
+    assert [manager.name for manager in Item._meta.managers] == ["objects", "other"]
+    assert Item._meta.default_manager.name == "objects"
+    assert type(Item.other) is models.Manager
+
+
+@isolate_apps("example_project.app")
 def test_lazy_manager__load__reverse_foreign_key__no_related_name() -> None:
     class Parent(models.Model):
         class Meta:

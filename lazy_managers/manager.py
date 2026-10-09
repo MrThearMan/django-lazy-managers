@@ -177,6 +177,8 @@ class LazyModelManager(BaseManager[Any]):
         # Only replace this manager with its lazy-loaded version, leave the rest as they are.
         for local_manager in local_managers:
             if name == local_manager.name:
+                # Keep the manager's place in the order, so that the default manager doesn't change.
+                manager.creation_counter = local_manager.creation_counter
                 manager.contribute_to_class(model, name)
             else:
                 model._meta.local_managers.append(local_manager)  # noqa: SLF001
