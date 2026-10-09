@@ -42,3 +42,15 @@ def test_lazy_attribute__load__instance() -> None:
     mock.assert_called_once_with("example_project.app.validators.ProjectValidators")
 
     assert isinstance(validators, ProjectValidators)
+
+
+def test_lazy_attribute__load__cached() -> None:
+    type(Project.__dict__["validators"]).__attribute_class__ = None
+
+    with patch("lazy_managers.attribute.import_string", side_effect=import_string) as mock:
+        first = Project.validators
+        second = Project.validators
+
+    mock.assert_called_once_with("example_project.app.validators.ProjectValidators")
+
+    assert first is second
