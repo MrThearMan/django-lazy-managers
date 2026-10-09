@@ -67,11 +67,13 @@ The library also provides a way to lazily load other attributes on a model, with
 same benefits of avoiding cyclical imports.
 
 ```python
-from typing import ClassVar, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from django.db import models
 from lazy_managers import LazyModelAttribute
 
 if TYPE_CHECKING:
+    from lazy_managers import LazyAttribute
+
     from .validators import ProjectValidators, TaskValidators
 
 
@@ -80,7 +82,7 @@ class Project(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    validators: ClassVar[ProjectValidators] = LazyModelAttribute.new()
+    validators: LazyAttribute[ProjectValidators] = LazyModelAttribute.new()
 
 
 class Task(models.Model):
@@ -90,12 +92,15 @@ class Task(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
 
-    validators: ClassVar[TaskValidators] = LazyModelAttribute.new()
+    validators: LazyAttribute[TaskValidators] = LazyModelAttribute.new()
 ```
 
 Here the attribute should take a single argument, which is the instance of the model being accessed.
 However, the attribute can be accessed on the class level, in which case the attribute class itself
 will be given from the descriptor.
+
+The `LazyAttribute` type hint tells type checkers about this: `Project.validators` is typed as
+`type[ProjectValidators]`, and `project.validators` is typed as `ProjectValidators`.
 
 ## Type hints
 

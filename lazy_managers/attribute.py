@@ -31,11 +31,13 @@ class LazyModelAttribute:
         >>>
         >>> from django.db import models
         >>>
+        >>> from lazy_managers import LazyAttribute
+        >>>
         >>> if TYPE_CHECKING:
         ...     from .validators import MyModelValidator  # type: ignore
         >>>
         >>> class MyModel(models.Model):
-        ...     validators: MyModelValidator = LazyModelAttribute.new()
+        ...     validators: LazyAttribute[MyModelValidator] = LazyModelAttribute.new()
 
         Here 'MyModelValidator' is a class that includes validation logic for the model.
         It takes a single argument, which is the model instance begin validated,
@@ -50,8 +52,8 @@ class LazyModelAttribute:
         attribute on the class level will return the hinted class itself, which in the validator example will
         allow create validation using classmethods.
 
-        Due to limitations of the Python typing system, the returned type on the class-level will be
-        an instance of the typed class, but the actual return value is the hinted class itself.
+        Use 'LazyAttribute' in the type hint so that type checkers know that class-level access
+        returns the hinted class, and instance-level access returns an instance of it.
 
         This approach is used instead of a more conventional 'decorator-descriptor' approach because
         some type checkers (PyCharm in particular) do not infer types from 'decorator-descriptors'

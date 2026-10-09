@@ -7,6 +7,8 @@ from django.db import models
 from lazy_managers import LazyModelAttribute, LazyModelManager
 
 if TYPE_CHECKING:
+    from lazy_managers import LazyAttribute
+
     from .querysets import ProjectManager, TaskManager
     from .validators import ProjectValidators, TaskValidators
 
@@ -22,7 +24,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects: ClassVar[ProjectManager] = LazyModelManager.new()
-    validators: ClassVar[ProjectValidators] = LazyModelAttribute.new()
+    validators: LazyAttribute[ProjectValidators] = LazyModelAttribute.new()
 
     def __str__(self) -> str:
         return self.name
@@ -36,7 +38,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
 
     objects: ClassVar[TaskManager] = LazyModelManager.new()
-    validators: ClassVar[TaskValidators] = LazyModelAttribute.new()
+    validators: LazyAttribute[TaskValidators] = LazyModelAttribute.new()
 
     def __str__(self) -> str:
         return self.name
