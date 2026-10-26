@@ -51,18 +51,18 @@ dev = [
 test = [
     "pytest==9.1.1",
     "pytest-django==4.14.0",
-    "coverage==7.16.2",
-    "nox==2026.8.17",
+    "coverage==7.17.0",
+    "nox==2026.10.20",
     "factory-boy==3.3.3",
 ]
 docs = [
-    "zensical==0.0.69",
-    "pymdown-extensions==12.1",
+    "zensical==0.0.71",
+    "pymdown-extensions==12.3",
     "pygments==2.21.0",
 ]
 lint = [
-    "prek==0.5.5",
-    "ruff==0.16.10",
+    "prek==0.5.7",
+    "ruff==0.17.2",
     "mypy==2.4.0",
     "django-stubs==6.1.2",
 ]
@@ -115,5 +115,5 @@ filterwarnings = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.12.24,<0.13.0"]
+requires = ["uv_build>=0.12.24,<0.14.0"]
 build-backend = "uv_build"
